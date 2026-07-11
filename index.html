@@ -1,0 +1,2419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Firedreams Studio, Demon At The Door: a hand-crafted adult visual novel</title>
+<meta name="description" content="Firedreams Studio makes hand-crafted adult visual novels. Demon At The Door, a hand-drawn 18+ dating sim built in Godot, is in active development." />
+
+<meta name="theme-color" content="#0b0810" />
+<link rel="canonical" href="https://firedreams.studio/" />
+
+<meta name="rating" content="adult" />
+<meta name="rating" content="RTA-5042-1996-1400-1577-RTA" />
+
+<meta property="og:site_name" content="Firedreams Studio" />
+<meta property="og:title" content="Firedreams Studio, Demon At The Door" />
+<meta property="og:description" content="A hand-drawn adult visual novel. A mansion in the woods, a town full of secrets, and something waiting at the door." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://firedreams.studio/" />
+<meta property="og:image" content="https://firedreams.studio/images/og_image.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="images/favicon-192.png" />
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
+
+<link rel="preload" as="image" href="images/bg/mansion_afternoon.webp" />
+<link rel="preload" as="image" href="images/datd_logo.webp" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<script>
+  try {
+    document.documentElement.classList.add('js');
+    if (localStorage.getItem('fds-age-ok') === '1') document.documentElement.classList.add('age-ok');
+  } catch (e) {}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "name": "Firedreams Studio",
+      "url": "https://firedreams.studio/",
+      "logo": "https://firedreams.studio/images/favicon-192.png",
+      "email": "dream@firedreams.studio"
+    },
+    {
+      "@type": "VideoGame",
+      "name": "Demon At The Door",
+      "url": "https://firedreams.studio/",
+      "image": "https://firedreams.studio/images/og_image.jpg",
+      "contentRating": "18+",
+      "gamePlatform": ["Windows", "Linux", "Steam Deck", "Android"],
+      "genre": ["Visual Novel", "Dating Sim", "Adventure"],
+      "publisher": { "@type": "Organization", "name": "Firedreams Studio" }
+    }
+  ]
+}
+</script>
+
+<style>
+  /* ============================================================
+     1. Tokens
+     ============================================================ */
+  :root {
+    --bg:           #0b0810;
+    --bg-elev-2:    #17121d;
+    --bg-elev-3:    #1f1826;
+    --pink:         #ff2d7a;
+    --pink-bright:  #ff5fa0;
+    --gold:         #f5e3b8;
+    --gold-bright:  #fff4d4;
+    --teal:         #3fd2c7;
+    --teal-bright:  #7fe8df;
+    --ivory:        #f7f5f9;
+    --ivory-soft:   #d8d2de;
+    --ivory-faint:  #a49aae;
+    --line:         rgba(247, 245, 249, 0.12);
+    --line-strong:  rgba(247, 245, 249, 0.26);
+    --shadow-soft:  0 6px 24px rgba(0, 0, 0, 0.6);
+    --shadow-medium:0 18px 48px rgba(0, 0, 0, 0.7);
+    --shadow-card:  0 4px 14px rgba(0, 0, 0, 0.6);
+    --radius: 14px;
+    --radius-lg: 22px;
+    --max-w: 1180px;
+    --font-display: "Cormorant Garamond", "Playfair Display", Georgia, "Times New Roman", serif;
+    --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+
+    /* Generic accent slots; sections re-theme via [data-accent] */
+    --accent:        var(--pink);
+    --accent-bright: var(--pink-bright);
+    --accent-dim:    rgba(255, 45, 122, 0.12);
+    --line-accent:   rgba(255, 45, 122, 0.5);
+    --glow-accent:   rgba(255, 45, 122, 0.45);
+    --shadow-glow:   0 8px 32px rgba(255, 45, 122, 0.45);
+    --shadow-accent: 0 0 24px rgba(255, 45, 122, 0.5);
+  }
+  [data-accent="teal"] {
+    --accent:        var(--teal);
+    --accent-bright: var(--teal-bright);
+    --accent-dim:    rgba(63, 210, 199, 0.10);
+    --line-accent:   rgba(63, 210, 199, 0.45);
+    --glow-accent:   rgba(63, 210, 199, 0.35);
+    --shadow-glow:   0 8px 32px rgba(63, 210, 199, 0.30);
+    --shadow-accent: 0 0 24px rgba(63, 210, 199, 0.35);
+  }
+  [data-accent="gold"] {
+    --accent:        var(--gold);
+    --accent-bright: var(--gold-bright);
+    --accent-dim:    rgba(245, 227, 184, 0.10);
+    --line-accent:   rgba(245, 227, 184, 0.40);
+    --glow-accent:   rgba(245, 227, 184, 0.28);
+    --shadow-glow:   0 8px 32px rgba(245, 227, 184, 0.22);
+    --shadow-accent: 0 0 24px rgba(245, 227, 184, 0.28);
+  }
+
+  /* ============================================================
+     2. Base
+     ============================================================ */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; font-size: 22px; }
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    color: var(--ivory);
+    background: var(--bg);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+  html:not(.age-ok) body { overflow: hidden; }
+
+  /* Ambient pink glow at the very top */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      radial-gradient(1200px 600px at 50% -20%, rgba(255, 45, 122, 0.12), transparent 70%),
+      var(--bg);
+  }
+
+  a { color: var(--gold); text-decoration: none; transition: color 0.2s ease; }
+  a:hover { color: var(--pink-bright); }
+  img { max-width: 100%; height: auto; display: block; }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 1.15;
+    margin: 0 0 0.4em;
+    color: var(--ivory);
+  }
+  h1 { font-size: clamp(3rem, 8vw, 5.4rem); font-weight: 600; }
+  h2 { font-size: clamp(2.15rem, 4.1vw, 3.05rem); }
+  h3 { font-size: 1.45rem; font-weight: 600; }
+  p { margin: 0 0 1em; }
+
+  ::selection { background: var(--pink); color: var(--bg); }
+
+  :focus-visible {
+    outline: 2px solid var(--accent, var(--pink));
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .skip-link {
+    position: absolute;
+    top: -60px;
+    left: 16px;
+    z-index: 300;
+    background: var(--bg-elev-3);
+    color: var(--ivory);
+    padding: 10px 18px;
+    border: 1px solid var(--line-strong);
+    border-radius: 4px;
+    transition: top 0.2s ease;
+  }
+  .skip-link:focus { top: 16px; }
+
+  /* ============================================================
+     3. Age gate
+     ============================================================ */
+  #age-gate {
+    position: fixed;
+    inset: 0;
+    z-index: 220;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background:
+      linear-gradient(rgba(8, 5, 10, 0.85), rgba(8, 5, 10, 0.92)),
+      url("images/bg/mansion_afternoon.webp") center / cover no-repeat var(--bg);
+    /* Opacity fade waits for the door leaves to finish swinging open. */
+    transition: opacity 0.5s ease 1s;
+  }
+  #age-gate.leaving { opacity: 0; pointer-events: none; }
+  html.age-ok #age-gate:not(.leaving) { display: none; }
+
+  /* The gate is the mansion's front door. Closed leaves carry the
+     consent text; Enter swings them open onto the summon room. */
+  .ag-door {
+    --arch: 50% 50% 14px 14px / 26% 26% 14px 14px;
+    position: relative;
+    width: min(94vw, 580px);
+    min-height: min(84svh, 700px);
+    display: grid;
+    place-items: center;
+    padding: 56px 28px 40px;
+    perspective: 1400px;
+  }
+  .ag-beyond {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: var(--arch);
+    background:
+      radial-gradient(80% 60% at 50% 45%, rgba(255, 230, 170, 0.35), rgba(255, 190, 120, 0.10) 60%, rgba(120, 80, 50, 0.15)),
+      url("images/bg/livingroom_afternoon.webp") center / cover no-repeat #e8d3ae;
+  }
+  #age-gate.leaving .ag-beyond { animation: beyond-flare 1.5s ease both; }
+  @keyframes beyond-flare {
+    0%   { filter: brightness(0.6); }
+    40%  { filter: brightness(1.9); }
+    100% { filter: brightness(1.1); }
+  }
+  .ag-leaf {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50.4%;
+    z-index: 1;
+    background:
+      linear-gradient(180deg, rgba(255, 240, 210, 0.14), transparent 22%),
+      radial-gradient(120% 90% at 50% 110%, rgba(255, 170, 90, 0.12), transparent 60%),
+      repeating-linear-gradient(90deg, #6e4526 0 44px, #7d522f 44px 47px),
+      #6e4526;
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 236, 200, 0.12),
+      inset 0 -60px 80px rgba(60, 32, 14, 0.45);
+    transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1) 0.15s;
+  }
+  .ag-leaf--left {
+    left: 0;
+    border-radius: 100% 0 0 14px / 26% 0 0 14px;
+    transform-origin: left center;
+  }
+  .ag-leaf--right {
+    right: 0;
+    border-radius: 0 100% 14px 0 / 0 26% 14px 0;
+    transform-origin: right center;
+  }
+  #age-gate.leaving .ag-leaf--left { transform: rotateY(-106deg); }
+  #age-gate.leaving .ag-leaf--right { transform: rotateY(106deg); }
+  /* Glowing seam between the leaves */
+  .ag-door::after {
+    content: "";
+    position: absolute;
+    top: 7%;
+    bottom: 3%;
+    left: 50%;
+    width: 2px;
+    transform: translateX(-50%);
+    z-index: 2;
+    background: linear-gradient(180deg, transparent, rgba(255, 232, 170, 0.9) 30%, rgba(255, 200, 120, 0.7) 70%, transparent);
+    filter: blur(1px);
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  #age-gate.leaving .ag-door::after { animation: seam-flare 0.6s ease both; }
+  @keyframes seam-flare {
+    0%   { opacity: 0.45; width: 2px; }
+    45%  { opacity: 1; width: 7px; filter: blur(2px); }
+    100% { opacity: 0; width: 10px; }
+  }
+  /* Door frame ring, stays put while the leaves swing */
+  .ag-door::before {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    z-index: 2;
+    border-radius: var(--arch);
+    border: 2px solid rgba(245, 227, 184, 0.30);
+    box-shadow:
+      0 0 60px rgba(255, 190, 100, 0.18),
+      0 24px 60px rgba(0, 0, 0, 0.65),
+      inset 0 0 26px rgba(20, 10, 5, 0.6);
+    pointer-events: none;
+  }
+
+  .ag-card {
+    position: relative;
+    z-index: 3;
+    max-width: 460px;
+    width: 100%;
+    text-align: center;
+    transition: opacity 0.25s ease;
+  }
+  #age-gate.leaving .ag-card { opacity: 0; }
+  /* The card sits on the wooden door leaves, so it keeps light text
+     regardless of the page palette. */
+  .ag-card .orn-star {
+    width: 44px;
+    height: 44px;
+    color: var(--pink-bright);
+    filter: drop-shadow(0 0 12px rgba(255, 77, 148, 0.6));
+    margin: 0 auto 18px;
+  }
+  .ag-card h2 {
+    font-style: italic;
+    font-size: 2.15rem;
+    margin-bottom: 12px;
+    color: #fff2d8;
+    text-shadow: 0 2px 16px rgba(60, 32, 14, 0.8);
+  }
+  .ag-card p {
+    color: #f6e6cc;
+    font-size: 1.25rem;
+    margin-bottom: 28px;
+    text-shadow: 0 1px 10px rgba(60, 32, 14, 0.8);
+  }
+  .ag-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .ag-note {
+    font-size: 1.05rem;
+    color: #e3d0b2;
+    margin: 0;
+    text-shadow: 0 1px 8px rgba(60, 32, 14, 0.8);
+  }
+  .ag-nojs { display: none; }
+  @media (max-width: 480px) {
+    .ag-door { padding: 44px 20px 32px; }
+    .ag-card h2 { font-size: 1.8rem; }
+  }
+
+  /* ============================================================
+     4. Nav
+     ============================================================ */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(11, 8, 16, 0.55);
+    backdrop-filter: saturate(160%) blur(14px);
+    -webkit-backdrop-filter: saturate(160%) blur(14px);
+    border-bottom: 1px solid transparent;
+    transition: background 0.3s ease, border-color 0.3s ease;
+  }
+  .nav.scrolled {
+    background: rgba(11, 8, 16, 0.85);
+    border-bottom-color: var(--line);
+  }
+  .nav-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .brand {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-style: italic;
+    font-size: 1.75rem;
+    color: var(--ivory);
+    display: inline-flex;
+    align-items: baseline;
+    gap: 10px;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .nav-logo {
+    width: 34px;
+    height: auto;
+    align-self: center;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.55));
+  }
+  .brand .fire { color: var(--pink); text-shadow: 0 0 18px rgba(255, 45, 122, 0.45); }
+  .brand .dreams { color: var(--gold); }
+  .brand .studio {
+    font-family: var(--font-body);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: var(--ivory-faint);
+    margin-left: 10px;
+    transform: translateY(-2px);
+  }
+  .nav-links {
+    display: flex;
+    gap: 24px;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    padding-left: 40px;
+    margin-left: 8px;
+    border-left: 1px solid var(--line);
+  }
+  .nav-links a {
+    color: var(--ivory-soft);
+    font-weight: 500;
+    font-size: 1.05rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 4px 2px;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .nav-links a:hover { color: var(--pink-bright); border-bottom-color: var(--pink); }
+  /* Below the width where the brand + single-row links fit together,
+     stack the nav so nothing overflows the page. */
+  @media (max-width: 1140px) {
+    .nav-inner { flex-direction: column; align-items: center; gap: 10px; }
+    .nav-links { justify-content: center; flex-wrap: wrap; padding-left: 0; margin-left: 0; border-left: 0; }
+  }
+  @media (max-width: 640px) {
+    .nav-inner { gap: 8px; padding: 12px 16px; }
+    .nav-links { gap: 6px 18px; flex-wrap: wrap; }
+    .nav-links a { font-size: 0.8rem; letter-spacing: 0.08em; }
+    .brand { font-size: 1.5rem; }
+    .brand .studio { display: none; }
+  }
+
+  /* ============================================================
+     5. Band system (full-bleed art backdrops)
+     ============================================================ */
+  .band { position: relative; isolation: isolate; }
+  .band::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  .band::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      linear-gradient(180deg, var(--bg) 0%, var(--scrim-tint, rgba(11, 8, 16, 0.88)) 14%, var(--scrim-tint, rgba(11, 8, 16, 0.88)) 86%, var(--bg) 100%);
+  }
+  @media (pointer: fine) and (min-width: 1024px) {
+    .band::before { background-attachment: fixed; }
+  }
+  .band--mansion::before  { background-image: url("images/bg/mansion_morning.webp"); }
+  .band--bakery::before   { background-image: url("images/bg/bakery_afternoon.webp"); }
+  .band--village::before  { background-image: url("images/bg/village_center.webp"); }
+  .band--computers::before{ background-image: url("images/bg/superduper_computer_store_afternoon.webp"); }
+  .band--garden::before   { background-image: url("images/bg/garden_afternoon.webp"); }
+  .band--mansion   { --scrim-tint: rgba(13, 9, 14, 0.86); }
+  .band--bakery    { --scrim-tint: rgba(12, 8, 10, 0.87); }
+  .band--village   { --scrim-tint: rgba(10, 9, 14, 0.86); }
+  .band--computers { --scrim-tint: rgba(9, 9, 14, 0.88); }
+  .band--garden    { --scrim-tint: rgba(9, 11, 10, 0.86); }
+
+  /* ============================================================
+     6. Hero
+     ============================================================ */
+  .hero {
+    position: relative;
+    z-index: 2;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    isolation: isolate;
+    padding: 48px 24px 96px;
+    gap: clamp(18px, 3.2vh, 40px);
+  }
+  @media (max-width: 759px) {
+    .hero { padding: 36px 20px 72px; }
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background: url("images/bg/mansion_afternoon.webp") center / cover no-repeat var(--bg);
+  }
+  .hero-scrim {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(120% 90% at 50% 42%, transparent 42%, rgba(11, 8, 16, 0.45) 80%, rgba(11, 8, 16, 0.8) 100%),
+      linear-gradient(180deg, rgba(11, 8, 16, 0.62), rgba(11, 8, 16, 0.10) 26%, transparent 48%, rgba(11, 8, 16, 0.55) 76%, var(--bg) 100%);
+  }
+  .hero-top, .hero-inner { width: 100%; max-width: 920px; margin: 0 auto; min-width: 0; position: relative; z-index: 1; }
+  /* Wider than hero-top so the tagline can sit on one line */
+  .hero-inner { max-width: 1300px; }
+  /* Soft dark cushion behind the headline + tagline so the light text
+     reads clearly over the bright mansion art. Concentrated on the
+     lower text, feathered out so the artwork stays visible. */
+  .hero-inner::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -4%;
+    transform: translateX(-50%);
+    width: min(150%, 1100px);
+    height: 62%;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(65% 100% at 50% 78%, rgba(11, 8, 16, 0.72) 0%, rgba(11, 8, 16, 0.5) 42%, rgba(11, 8, 16, 0.22) 68%, transparent 85%);
+  }
+
+  /* Ember canvases: behind text, above the section backdrop */
+  .embers {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+  @media (max-width: 759px) {
+    .hero-scrim {
+      background:
+        linear-gradient(180deg, rgba(11, 8, 16, 0.68), rgba(11, 8, 16, 0.30) 30%, rgba(11, 8, 16, 0.60) 55%, rgba(11, 8, 16, 0.92) 78%, var(--bg) 100%);
+    }
+  }
+  /* Film-style title card: logo, studio name, "presents" */
+  .title-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .tc-name {
+    margin: 0;
+    font-weight: 600;
+    font-size: clamp(1.5rem, 2.6vw, 1.9rem);
+    letter-spacing: 0.4em;
+    padding-left: 0.4em;
+    text-transform: uppercase;
+    line-height: 1.3;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.85);
+  }
+  .tc-name .fire { color: var(--pink-bright); text-shadow: 0 0 18px rgba(255, 45, 122, 0.5); }
+  .tc-name .dreams { color: var(--gold); }
+  .tc-name .tc-studio { color: var(--ivory-soft); }
+  .tc-presents {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.6rem, 2.6vw, 2rem);
+    color: var(--ivory);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.85);
+  }
+  .tc-presents .badge-18 {
+    background: rgba(11, 8, 16, 0.5);
+  }
+  @media (max-width: 640px) {
+    .tc-name { font-size: 1.25rem; letter-spacing: 0.28em; padding-left: 0.28em; }
+    .tc-presents { font-size: 1.3rem; gap: 8px; }
+    .hero .tagline { font-size: 1.1rem; }
+  }
+
+  /* No staged entrance animation: the hero renders instantly so the
+     page feels snappy. data-stage / --s attributes on the markup are
+     now inert. */
+  /* The game logo carries the title; its alt text speaks for it. */
+  .hero h1 {
+    margin-bottom: 0.15em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .hero-logo {
+    width: min(88vw, 680px);
+    height: auto;
+    filter:
+      drop-shadow(0 0 30px rgba(255, 45, 122, 0.35))
+      drop-shadow(0 12px 30px rgba(0, 0, 0, 0.55));
+  }
+  .hero h1 .accent {
+    display: block;
+    color: var(--gold);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(2rem, 3vw, 2.6rem);
+    letter-spacing: 0.02em;
+    text-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.9),
+      0 2px 12px rgba(0, 0, 0, 0.9);
+  }
+  .hero .tagline {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.2rem, 1.95vw, 1.65rem);
+    color: var(--ivory);
+    max-width: none;
+    margin: 6px auto 18px;
+    line-height: 1.5;
+    text-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.9),
+      0 2px 12px rgba(0, 0, 0, 0.9);
+  }
+  .hero-cta { display: inline-flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+  .scroll-cue {
+    position: absolute;
+    bottom: 26px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--ivory-faint);
+    animation: cue-bob 2.2s ease-in-out infinite;
+  }
+  .scroll-cue svg { display: block; }
+  @keyframes cue-bob {
+    0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.55; }
+    50%      { transform: translateX(-50%) translateY(8px); opacity: 1; }
+  }
+
+  /* ============================================================
+     7. Buttons
+     ============================================================ */
+  .btn {
+    display: inline-block;
+    padding: 14px 28px;
+    border-radius: 2px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 1.02rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.25s ease, background 0.25s, color 0.25s, border-color 0.25s;
+    text-decoration: none;
+  }
+  .btn-primary {
+    background: var(--pink);
+    color: #fff;
+    border-color: var(--pink);
+    box-shadow: var(--shadow-glow);
+  }
+  .btn-primary:hover {
+    background: var(--pink-bright);
+    transform: translateY(-2px);
+    color: #fff;
+    box-shadow: var(--shadow-glow), var(--shadow-accent);
+  }
+  .btn-ghost {
+    background: rgba(11, 8, 16, 0.45);
+    color: var(--gold);
+    border-color: var(--gold);
+  }
+  .btn-ghost:hover { background: var(--gold); color: var(--bg); transform: translateY(-2px); }
+
+  /* ============================================================
+     8. Section shell + ornaments
+     ============================================================ */
+  section { position: relative; z-index: 2; }
+  .section { padding: 120px 24px; }
+  .section-inner { max-width: var(--max-w); margin: 0 auto; }
+  .section-eyebrow {
+    display: inline-block;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--accent-bright);
+    margin-bottom: 18px;
+  }
+  .section-header { text-align: center; max-width: 760px; margin: 0 auto 64px; }
+  .section-header h2 {
+    margin-bottom: 18px;
+    background: linear-gradient(180deg, var(--gold-bright), var(--gold));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .section-header p {
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--ivory-soft);
+    font-size: 1.6rem;
+    line-height: 1.5;
+  }
+  /* Let the gallery subtitle break out of the 760px header cap so it
+     stays on a single line, but only once the viewport is wide enough
+     to hold it without forcing horizontal page overflow. */
+  @media (min-width: 1280px) {
+    #gallery .section-header { max-width: none; }
+    #gallery .section-header p { white-space: nowrap; }
+  }
+  .orn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 0 auto 22px;
+    color: var(--accent);
+  }
+  .orn::before, .orn::after {
+    content: "";
+    width: 70px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--line-accent));
+  }
+  .orn::after { background: linear-gradient(90deg, var(--line-accent), transparent); }
+  .orn-star { width: 22px; height: 22px; filter: drop-shadow(0 0 8px var(--glow-accent)); }
+  .orn-star--spin { animation: star-spin 60s linear infinite; }
+  @keyframes star-spin { to { transform: rotate(360deg); } }
+
+  /* Scroll reveal */
+  html.js [data-reveal] {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+    /* Inline --d values are authored for the old slow reveal; halve them. */
+    transition-delay: calc(var(--d, 0s) / 2);
+  }
+  html.js [data-reveal].in-view { opacity: 1; transform: none; }
+
+  /* ============================================================
+     9. Game section
+     ============================================================ */
+  .rating-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--pink);
+    color: #fff;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.18em;
+    padding: 6px 14px;
+    border-radius: 2px;
+    margin-left: 14px;
+    vertical-align: middle;
+    box-shadow: var(--shadow-accent);
+  }
+  .rating-badge .dot {
+    width: 6px;
+    height: 6px;
+    background: var(--pink-bright);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--pink), 0 0 16px rgba(255, 45, 122, 0.6);
+  }
+  .game-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 64px;
+    align-items: start;
+  }
+  @media (max-width: 880px) { .game-grid { grid-template-columns: 1fr; gap: 40px; } }
+  .game-synopsis p { font-size: 1.35rem; color: var(--ivory-soft); line-height: 1.75; }
+  .game-synopsis p:first-of-type::first-letter {
+    font-family: var(--font-display);
+    font-size: 3.8rem;
+    font-weight: 600;
+    color: var(--gold);
+    float: left;
+    line-height: 0.85;
+    margin: 8px 12px 0 0;
+    text-shadow: 0 2px 14px rgba(245, 227, 184, 0.35);
+  }
+  .features-title { color: var(--gold); margin-bottom: 20px; font-style: italic; }
+  .feature-list { list-style: none; padding: 0; margin: 0 0 24px; }
+  .feature-list li {
+    position: relative;
+    padding: 14px 0 14px 28px;
+    border-bottom: 1px solid var(--line);
+    color: var(--ivory-soft);
+    font-size: 1.25rem;
+  }
+  .feature-list li:last-child { border-bottom: none; }
+  .feature-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 22px;
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    transform: rotate(45deg);
+    box-shadow: 0 0 14px var(--glow-accent);
+  }
+
+  /* ============================================================
+     10. Gallery
+     ============================================================ */
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  @media (max-width: 880px) { .gallery { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .gallery { grid-template-columns: 1fr; } }
+  .shot {
+    position: relative;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--bg-elev-2);
+    cursor: zoom-in;
+    box-shadow: var(--shadow-card);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    border: 1px solid var(--line);
+    padding: 0;
+    width: 100%;
+  }
+  .shot:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-medium), var(--shadow-accent);
+    border-color: var(--accent);
+  }
+  .shot img {
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    width: 100%;
+    transition: transform 0.5s ease;
+  }
+  .shot:hover img { transform: scale(1.05); }
+  .shot-caption {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 36px 16px 14px;
+    background: linear-gradient(transparent, rgba(45, 28, 20, 0.88));
+    color: #fff5e0;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.25rem;
+    text-align: left;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .shot:hover .shot-caption, .shot:focus-visible .shot-caption { opacity: 1; }
+
+  /* ============================================================
+     11. Lightbox
+     ============================================================ */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 2, 4, 0.96);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 100;
+    padding: 24px;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img {
+    max-width: min(100%, 1400px);
+    max-height: 82vh;
+    border-radius: 4px;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 0 1px var(--line);
+  }
+  .lightbox-bar {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-top: 16px;
+    color: #e8d9c8;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.25rem;
+  }
+  .lightbox-counter {
+    font-family: var(--font-body);
+    font-style: normal;
+    font-size: 1rem;
+    letter-spacing: 0.14em;
+    color: #bfae9d;
+  }
+  .lb-btn {
+    background: rgba(30, 22, 26, 0.7);
+    border: 1px solid rgba(255, 245, 230, 0.3);
+    color: #f5e3b8;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    font-size: 1.45rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+    flex-shrink: 0;
+  }
+  .lb-btn:hover { background: var(--gold); color: var(--bg); border-color: var(--gold); }
+  .lb-btn svg { display: block; }
+  .lightbox-close { position: absolute; top: 22px; right: 26px; }
+  .lightbox-prev { position: absolute; left: 26px; top: 50%; transform: translateY(-50%); }
+  .lightbox-next { position: absolute; right: 26px; top: 50%; transform: translateY(-50%); }
+  @media (max-width: 700px) {
+    .lightbox-prev { left: 10px; }
+    .lightbox-next { right: 10px; }
+  }
+
+  /* ============================================================
+     12. Characters
+     ============================================================ */
+  .char-featured {
+    display: grid;
+    grid-template-columns: minmax(260px, 420px) 1fr;
+    gap: 0;
+    background: linear-gradient(120deg, #120c16, #1a1420);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 56px;
+    box-shadow: var(--shadow-medium), 0 0 60px rgba(255, 45, 122, 0.12);
+    animation: featured-glow 5s ease-in-out infinite alternate;
+  }
+  @keyframes featured-glow {
+    from { box-shadow: var(--shadow-medium), 0 0 40px rgba(255, 45, 122, 0.10); }
+    to   { box-shadow: var(--shadow-medium), 0 0 80px rgba(255, 45, 122, 0.22); }
+  }
+  @media (max-width: 760px) { .char-featured { grid-template-columns: 1fr; } }
+  .char-featured-window {
+    position: relative;
+    background:
+      radial-gradient(90% 75% at 50% 32%, var(--cglow, rgba(255, 45, 122, 0.22)), transparent 75%),
+      linear-gradient(180deg, #181220, #0e0b12);
+    min-height: 320px;
+    overflow: hidden;
+  }
+  .char-featured-window img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+  }
+  .char-featured-window video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    opacity: 0;
+  }
+  .char-featured-window video.playing { opacity: 1; }
+  .char-featured-window::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 -60px 70px -40px rgba(5, 4, 6, 0.7), inset 0 0 0 1px var(--line);
+    pointer-events: none;
+  }
+  .char-featured-body { padding: 44px 40px; align-self: center; }
+  .char-featured-body .section-eyebrow { margin-bottom: 10px; }
+  .char-featured-body h3 {
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-style: italic;
+    color: var(--gold-bright);
+    margin-bottom: 14px;
+  }
+  .char-featured-body p {
+    color: var(--ivory-soft);
+    font-size: 1.35rem;
+    line-height: 1.7;
+    max-width: 52ch;
+    margin: 0;
+  }
+
+  .char-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 22px;
+  }
+  .char-card {
+    background: var(--bg-elev-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+  .char-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--line-accent);
+    box-shadow: var(--shadow-medium), var(--shadow-accent);
+  }
+  .char-window {
+    position: relative;
+    aspect-ratio: 1;
+    background:
+      radial-gradient(85% 70% at 50% 34%, var(--cglow, rgba(255, 45, 122, 0.16)), transparent 75%),
+      linear-gradient(180deg, #171220, #0f0c13);
+    overflow: hidden;
+  }
+  .char-window img { width: 100%; height: 100%; object-fit: cover; }
+  .char-window video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+  }
+  .char-window video.playing { opacity: 1; }
+  .anim-playing .char-window img,
+  .anim-playing .char-featured-window img { visibility: hidden; }
+  .char-window::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 0 1px var(--line), inset 0 -46px 60px -30px rgba(5, 4, 6, 0.6);
+    pointer-events: none;
+  }
+  .char-body { padding: 18px 20px 20px; }
+  .char-body h3 {
+    font-style: italic;
+    font-size: 1.75rem;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .char-body p {
+    color: var(--ivory-soft);
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* "More to come" placeholder card */
+  .char-card--tba {
+    border-style: dashed;
+    border-color: var(--line-strong);
+    background: linear-gradient(180deg, rgba(23, 18, 26, 0.6), rgba(13, 11, 16, 0.6));
+  }
+  .char-window--tba {
+    display: grid;
+    place-items: center;
+  }
+  .tba-star {
+    width: 58px;
+    height: 58px;
+    color: var(--pink-bright);
+    opacity: 0.55;
+    filter: drop-shadow(0 0 10px rgba(255, 45, 122, 0.4));
+    transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.4s ease;
+  }
+  .char-card--tba:hover .tba-star { opacity: 0.9; transform: rotate(72deg) scale(1.08); }
+
+  /* Hover wink: "come" -> "cum" */
+  .tba-word {
+    position: relative;
+    display: inline-block;
+  }
+  .tba-come,
+  .tba-cum {
+    transition: opacity 0.28s ease;
+  }
+  .tba-cum {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    color: var(--pink-bright);
+    text-shadow: 0 0 14px rgba(255, 45, 122, 0.55);
+    white-space: nowrap;
+  }
+  .char-card--tba:hover .tba-come,
+  .char-card--tba:focus-within .tba-come { opacity: 0; }
+  .char-card--tba:hover .tba-cum,
+  .char-card--tba:focus-within .tba-cum { opacity: 1; }
+  @media (hover: none) {
+    .tba-cum { display: none; }
+  }
+
+  /* ============================================================
+     13. Engine
+     ============================================================ */
+  .engine-tags { text-align: center; margin-bottom: 36px; }
+  .engine-tag {
+    display: inline-block;
+    color: var(--gold);
+    font-weight: 500;
+    font-size: 1rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 2px;
+    margin: 0 8px 8px 0;
+    border: 1px solid var(--line-strong);
+    background: rgba(11, 8, 16, 0.45);
+  }
+  .engine-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 40px;
+  }
+  .engine-card {
+    background: rgba(23, 18, 29, 0.85);
+    border-radius: var(--radius);
+    padding: 32px 28px;
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--line);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+  }
+  .engine-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-medium), var(--shadow-accent);
+    border-color: var(--line-accent);
+  }
+  .engine-card h3 {
+    color: var(--gold);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-style: italic;
+    font-weight: 600;
+  }
+  .engine-card .icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 4px;
+    background: var(--accent-dim);
+    border: 1px solid var(--line-accent);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-bright);
+    flex-shrink: 0;
+  }
+  .engine-card p { color: var(--ivory-soft); font-size: 1.25rem; margin: 0; line-height: 1.7; }
+
+  /* ============================================================
+     14. Platforms + Early Access
+     ============================================================ */
+  .platform-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    max-width: 920px;
+    margin: 0 auto;
+  }
+  @media (max-width: 700px) { .platform-grid { grid-template-columns: 1fr; } }
+  .platform-block h3 { color: var(--gold); margin-bottom: 18px; font-style: italic; font-size: 1.25rem; }
+  .platform-block.upcoming h3 { color: var(--ivory-faint); }
+  .platform-list { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+  /* Keep each block's systems on one line, but only once the row is
+     wide enough to hold all pills without overflowing the page. Below
+     this the pills wrap within their column. */
+  @media (min-width: 1150px) {
+    .platform-grid { max-width: 1120px; grid-template-columns: auto auto; justify-content: center; gap: 56px; }
+    .platform-list { flex-wrap: nowrap; gap: 8px; }
+    .platform-pill {
+      white-space: nowrap;
+      padding: 10px 12px;
+      gap: 7px;
+      font-size: 1.02rem;
+    }
+  }
+  .platform-pill {
+    background: var(--bg-elev-2);
+    border: 1px solid var(--line-strong);
+    border-radius: 2px;
+    padding: 10px 18px;
+    font-weight: 500;
+    font-size: 1.05rem;
+    letter-spacing: 0.05em;
+    color: var(--ivory);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: var(--shadow-card);
+  }
+  .platform-block.upcoming .platform-pill {
+    background: transparent;
+    color: var(--ivory-faint);
+    border-style: dashed;
+    border-color: rgba(138, 122, 106, 0.4);
+    box-shadow: none;
+  }
+  .platform-pill svg { width: 16px; height: 16px; flex-shrink: 0; color: var(--gold); }
+  .platform-block.upcoming .platform-pill svg { color: var(--ivory-faint); }
+
+  .ea-callout {
+    margin-top: 80px;
+    padding: 64px 32px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    box-shadow: var(--shadow-medium);
+  }
+  .ea-callout::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background: url("images/bg/garden_afternoon.webp") center 70% / cover no-repeat;
+  }
+  .ea-callout::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(75% 90% at 50% 55%, rgba(8, 6, 10, 0.55) 0%, rgba(8, 6, 10, 0.9) 100%),
+      linear-gradient(rgba(8, 6, 10, 0.35), rgba(8, 6, 10, 0.35));
+  }
+  .ea-top-rule {
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--pink) 40%, var(--gold) 60%, transparent);
+    box-shadow: 0 0 12px rgba(255, 45, 122, 0.5);
+  }
+  .ea-callout h3 {
+    color: var(--gold-bright);
+    font-size: 1.8rem;
+    font-style: italic;
+    margin-bottom: 12px;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.8);
+  }
+  .ea-callout > p {
+    color: var(--ivory);
+    margin: 0 auto 26px;
+    font-family: var(--font-body);
+    font-style: normal;
+    font-size: 1.5rem;
+    line-height: 1.7;
+    max-width: 60ch;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.8);
+  }
+  .ea-channels { display: inline-flex; flex-wrap: wrap; gap: 12px; justify-content: center; position: relative; z-index: 1; }
+  .ea-callout h3, .ea-callout > p { position: relative; z-index: 1; }
+  .ea-channel {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(11, 8, 16, 0.6);
+    border-radius: 2px;
+    padding: 10px 20px;
+    font-weight: 500;
+    font-size: 1.05rem;
+    letter-spacing: 0.08em;
+    color: var(--ivory);
+    border: 1px solid var(--line-strong);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+  }
+  .ea-channel svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    color: var(--gold);
+  }
+  a.ea-channel { transition: border-color 0.2s, color 0.2s, transform 0.2s; }
+  a.ea-channel:hover {
+    color: var(--ivory);
+    border-color: var(--gold);
+    transform: translateY(-2px);
+  }
+  .ea-channel small {
+    color: var(--ivory-faint);
+    font-weight: 400;
+    margin-left: 8px;
+    font-size: 0.92rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* Bonbon appears in the summon room when the callout scrolls into view */
+  .ea-visitor {
+    position: absolute;
+    right: 4px;
+    bottom: 0;
+    width: min(34%, 240px);
+    aspect-ratio: 1;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .ea-visitor video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: right bottom;
+    opacity: 0;
+    transition: opacity 1.4s ease;
+    filter: drop-shadow(0 0 26px rgba(255, 45, 122, 0.35));
+    /* Ghostly fade instead of the video frame's hard edges */
+    -webkit-mask-image: radial-gradient(130% 130% at 68% 28%, #000 42%, transparent 74%);
+    mask-image: radial-gradient(130% 130% at 68% 28%, #000 42%, transparent 74%);
+  }
+  .ea-visitor video.playing { opacity: 0.92; }
+  @media (max-width: 760px) {
+    .ea-visitor { display: none; }
+  }
+
+  /* ============================================================
+     14b. Roadmap
+     ============================================================ */
+  .roadmap {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    max-width: 1060px;
+    margin: 0 auto;
+  }
+  .road-phase {
+    background: rgba(23, 18, 29, 0.85);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 30px 28px;
+    box-shadow: var(--shadow-card);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+  }
+  .road-phase h3 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-style: italic;
+    font-size: 1.6rem;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+  .road-node {
+    width: 10px;
+    height: 10px;
+    transform: rotate(45deg);
+    background: var(--ivory-faint);
+    flex-shrink: 0;
+  }
+  .road-phase.is-done .road-node {
+    background: var(--gold);
+    box-shadow: 0 0 14px rgba(245, 227, 184, 0.5);
+  }
+  .road-phase.is-now .road-node {
+    background: var(--pink);
+    animation: node-pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes node-pulse {
+    0%, 100% { box-shadow: 0 0 8px rgba(255, 77, 148, 0.4); }
+    50%      { box-shadow: 0 0 18px rgba(255, 77, 148, 0.85); }
+  }
+  .road-phase ul { list-style: none; margin: 0; padding: 0; }
+  .road-phase li {
+    position: relative;
+    padding: 10px 0 10px 24px;
+    border-bottom: 1px solid var(--line);
+    color: var(--ivory-soft);
+    font-size: 1.2rem;
+  }
+  .road-phase li:last-child { border-bottom: none; }
+  .road-phase li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 19px;
+    width: 6px;
+    height: 6px;
+    transform: rotate(45deg);
+    background: var(--gold);
+    box-shadow: 0 0 10px var(--glow-accent);
+  }
+  .road-phase.is-now li::before {
+    background: var(--pink);
+    box-shadow: 0 0 10px rgba(255, 45, 122, 0.5);
+  }
+  .road-phase.is-next { border-style: dashed; border-color: var(--line-strong); }
+  .road-phase.is-next h3 { color: var(--ivory-soft); }
+  .road-phase.is-next li::before { background: var(--ivory-faint); box-shadow: none; }
+  @media (max-width: 880px) {
+    .roadmap { grid-template-columns: 1fr; max-width: 520px; }
+  }
+
+  /* ============================================================
+     15. Studio + footer
+     ============================================================ */
+  .studio-inner { max-width: 1000px; margin: 0 auto; position: relative; z-index: 1; }
+
+  /* --- Intro: logo, name, lede --- */
+  .studio-intro { text-align: center; max-width: 760px; margin: 0 auto; }
+  .studio-logo-wrap {
+    position: relative;
+    width: min(85vw, 700px);
+    margin: 0 auto 26px;
+  }
+  .studio-logo-wrap::before {
+    content: "";
+    position: absolute;
+    inset: -30% -30% -20%;
+    z-index: -1;
+    background: radial-gradient(closest-side, rgba(255, 150, 60, 0.34), rgba(255, 90, 160, 0.12) 55%, transparent 72%);
+    animation: studio-glow 7s ease-in-out infinite;
+  }
+  @keyframes studio-glow {
+    0%, 100% { opacity: 0.8; transform: scale(1); }
+    50%      { opacity: 1;   transform: scale(1.06); }
+  }
+  .studio-logo {
+    width: min(85vw, 700px);
+    filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.6));
+  }
+  .studio-title {
+    margin-bottom: 16px;
+    font-size: clamp(2.15rem, 4vw, 3.05rem);
+    background: linear-gradient(180deg, var(--gold-bright), var(--gold));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .studio-lede {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.6rem, 2.6vw, 1.9rem);
+    line-height: 1.5;
+    color: var(--gold);
+    margin: 0 auto;
+    max-width: 44ch;
+  }
+
+  /* --- Pillars --- */
+  .studio-pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    margin: 66px 0 0;
+  }
+  .studio-pillar {
+    position: relative;
+    padding: 34px 28px;
+    background: linear-gradient(180deg, rgba(24, 19, 16, 0.75), rgba(14, 12, 10, 0.75));
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    box-shadow: var(--shadow-card);
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .studio-pillar:hover {
+    transform: translateY(-4px);
+    border-color: var(--line-accent);
+    box-shadow: var(--shadow-medium), 0 0 26px rgba(245, 227, 184, 0.14);
+  }
+  .studio-pillar-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    margin-bottom: 18px;
+    border-radius: 50%;
+    color: var(--gold-bright);
+    background: radial-gradient(closest-side, rgba(245, 227, 184, 0.16), transparent);
+    border: 1px solid var(--line-accent);
+  }
+  .studio-pillar-icon svg { width: 26px; height: 26px; filter: drop-shadow(0 0 6px var(--glow-accent)); }
+  .studio-pillar h3 {
+    font-style: italic;
+    font-size: 1.6rem;
+    color: var(--gold-bright);
+    margin-bottom: 12px;
+  }
+  .studio-pillar p {
+    margin: 0;
+    color: var(--ivory);
+    font-size: 1.25rem;
+    line-height: 1.65;
+  }
+
+  /* --- Belief pull-quote --- */
+  .studio-belief {
+    margin: 66px auto 0;
+    max-width: 960px;
+    text-align: center;
+  }
+  .studio-belief .orn { margin-bottom: 22px; }
+  .studio-belief p {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.7rem, 3vw, 2.25rem);
+    line-height: 1.4;
+    color: var(--gold-bright);
+    margin: 0 0 18px;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.7);
+  }
+  .studio-belief cite {
+    display: block;
+    font-style: normal;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--accent-bright);
+  }
+
+  @media (max-width: 860px) {
+    .studio-pillars { grid-template-columns: 1fr; gap: 16px; max-width: 460px; margin-left: auto; margin-right: auto; }
+    .studio-pillar { padding: 26px 24px; }
+  }
+
+  footer {
+    background: #06040a;
+    color: var(--ivory);
+    padding: 56px 24px 40px;
+    position: relative;
+    z-index: 2;
+    border-top: 1px solid var(--line);
+  }
+  .footer-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    justify-content: space-between;
+    align-items: center;
+  }
+  footer .brand { font-size: 1.65rem; display: inline-flex; align-items: center; gap: 12px; }
+  .footer-logo {
+    width: 40px;
+    height: auto;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.6));
+  }
+  footer a { color: var(--ivory); border-bottom: 1px solid var(--line-strong); padding-bottom: 2px; }
+  footer a:hover { color: var(--gold); border-bottom-color: var(--gold); }
+  .footer-meta {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--ivory-faint);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .footer-disclaimer {
+    flex-basis: 100%;
+    margin: 4px 0 0;
+    padding-top: 20px;
+    border-top: 1px solid var(--line-strong);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--ivory-faint);
+    text-align: center;
+  }
+  .badge-18 {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-body);
+    font-style: normal;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    color: var(--pink-bright);
+    border: 1px solid var(--line-accent);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+  }
+
+  /* ============================================================
+     16. Reduced motion
+     ============================================================ */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    html.js [data-reveal] { opacity: 1; transform: none; }
+    html.js .hero [data-stage] { animation: none !important; opacity: 1 !important; transform: none !important; }
+    .scroll-cue { display: none; }
+  }
+</style>
+
+<noscript>
+<style>
+  #age-gate { position: static; min-height: 100svh; }
+  html:not(.age-ok) body { overflow: auto; }
+  .ag-nojs { display: block; }
+  html.js [data-reveal] { opacity: 1; transform: none; }
+</style>
+</noscript>
+</head>
+<body>
+
+<a class="skip-link" href="#about">Skip to content</a>
+
+<!-- ============ AGE GATE ============ -->
+<div id="age-gate" role="alertdialog" aria-modal="true" aria-labelledby="ag-title" aria-describedby="ag-desc">
+  <div class="ag-door">
+    <div class="ag-beyond" aria-hidden="true"></div>
+    <div class="ag-leaf ag-leaf--left" aria-hidden="true"></div>
+    <div class="ag-leaf ag-leaf--right" aria-hidden="true"></div>
+    <div class="ag-card">
+    <svg class="orn-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.9" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="10.4" />
+      <path d="M12 3 L17.29 19.28 L3.44 9.22 L20.56 9.22 L6.71 19.28 Z" />
+    </svg>
+    <h2 id="ag-title">Adults only</h2>
+    <p id="ag-desc">Firedreams Studio makes games for grown-ups. This site presents Demon At The Door, an adult visual novel with content intended for mature audiences. Please confirm that you are 18 or older.</p>
+    <div class="ag-actions">
+      <button id="ag-enter" class="btn btn-primary" type="button">I am 18 or older. Enter</button>
+      <a class="btn btn-ghost" href="https://www.google.com" rel="nofollow">Leave</a>
+    </div>
+    <p class="ag-note">Your choice is remembered on this device.</p>
+    <p class="ag-note ag-nojs">JavaScript is disabled. By scrolling past this notice you confirm that you are 18 or older.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ NAV ============ -->
+<nav class="nav" id="nav" aria-label="Main">
+  <div class="nav-inner">
+    <a href="#top" class="brand"><img class="nav-logo" src="images/firedreams_logo.webp" width="1328" height="1328" alt="" /><span class="fire">Fire</span><span class="dreams">dreams</span><span class="studio">Studio</span></a>
+    <div class="nav-links">
+      <a href="#about">Studio</a>
+      <a href="#game">Game</a>
+      <a href="#characters">Characters</a>
+      <a href="#engine">Engine</a>
+      <a href="#platforms">Platforms</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="top">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-scrim" aria-hidden="true"></div>
+  <canvas class="embers" aria-hidden="true"></canvas>
+  <div class="hero-top">
+    <div class="title-card">
+      <p class="tc-name" data-stage style="--s: 1"><span class="fire">Fire</span><span class="dreams">dreams</span> <span class="tc-studio">Studio</span></p>
+      <p class="tc-presents" data-stage style="--s: 2"><span>an adult games studio presents</span> <span class="badge-18" aria-label="18 plus">18+</span></p>
+    </div>
+  </div>
+  <div class="hero-inner">
+    <h1 data-stage style="--s: 3"><img class="hero-logo" src="images/datd_logo.webp" width="900" height="887" alt="Demon At The Door" /><span class="accent">A visual novel to get excited about.</span></h1>
+    <p class="tagline" data-stage style="--s: 4">A mansion deep in the woods. A town full of warm faces. Discoveries around every corner.</p>
+    <div class="hero-cta" data-stage style="--s: 5">
+      <a href="#game" class="btn btn-primary">Explore the game</a>
+      <a href="#characters" class="btn btn-ghost">Meet the characters</a>
+    </div>
+  </div>
+  <div class="scroll-cue" aria-hidden="true">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ============ STUDIO ============ -->
+<section class="section band band--garden studio" id="about" data-accent="gold">
+  <canvas class="embers" aria-hidden="true"></canvas>
+  <div class="section-inner studio-inner">
+    <div class="studio-intro" data-reveal>
+      <div class="studio-logo-wrap">
+        <img class="studio-logo" src="images/firedreams_logo.webp" width="1328" height="1328" alt="Firedreams Studio logo" loading="lazy" />
+      </div>
+      <span class="section-eyebrow">The studio behind the door</span>
+      <h2 class="studio-title">Firedreams Studio</h2>
+      <p class="studio-lede">A small, independent studio building hand-crafted adult visual novels, and the tools we wished we had when we started.</p>
+    </div>
+
+    <div class="studio-pillars" data-reveal style="--d: 0.08s">
+      <article class="studio-pillar">
+        <span class="studio-pillar-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1.6 2.4 3.6 3.6 3.6 6.4A3.6 3.6 0 0 1 12 13a3.6 3.6 0 0 1-3.6-3.6C8.4 6.6 10.4 5.4 12 3z"/><path d="M12 13c-3.3 0-6 2.2-6 5 0 1.6 2.7 3 6 3s6-1.4 6-3c0-2.8-2.7-5-6-5z"/></svg>
+        </span>
+        <h3>Beautiful details</h3>
+        <p>Every illustration, character, and location has its own unique style and feel.</p>
+      </article>
+
+      <article class="studio-pillar">
+        <span class="studio-pillar-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V6a1 1 0 0 1 1-1h5v14H5a1 1 0 0 1-1-1z"/><path d="M20 19V6a1 1 0 0 0-1-1h-5v14h5a1 1 0 0 0 1-1z"/><path d="M12 5v14"/></svg>
+        </span>
+        <h3>Sexy stories with warmth</h3>
+        <p>Feel the love from the interactions and stories.</p>
+      </article>
+
+      <article class="studio-pillar">
+        <span class="studio-pillar-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6l-1 6h3l-8 12 2-8H8z"/></svg>
+        </span>
+        <h3>Tools we share</h3>
+        <p>The engine carrying Demon At The Door is being shaped, in parallel, into something other writers and artists can build on.</p>
+      </article>
+    </div>
+
+    <blockquote class="studio-belief" data-reveal style="--d: 0.16s">
+      <span class="orn" aria-hidden="true">
+        <svg class="orn-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.9" stroke-linejoin="round"><circle cx="12" cy="12" r="10.4"/><path d="M12 3 L17.29 19.28 L3.44 9.22 L20.56 9.22 L6.71 19.28 Z"/></svg>
+      </span>
+      <p>We believe adult interactive fiction deserves the same craft, warmth, and care as any other medium.</p>
+      <cite>Firedreams Studio</cite>
+    </blockquote>
+  </div>
+</section>
+
+<!-- ============ GAME ============ -->
+<section class="section band band--mansion" id="game">
+  <div class="section-inner">
+    <div class="section-header" data-reveal>
+      <span class="section-eyebrow">Now in development</span>
+      <h2>The estate is waiting <span class="rating-badge"><span class="dot"></span>18+</span></h2>
+      <div class="orn" aria-hidden="true">
+        <svg class="orn-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.9" stroke-linejoin="round"><circle cx="12" cy="12" r="10.4"/><path d="M12 3 L17.29 19.28 L3.44 9.22 L20.56 9.22 L6.71 19.28 Z"/></svg>
+      </div>
+      <p>An adult dating sim where every day is yours to spend, and every night pulls the thread a little further.</p>
+    </div>
+
+    <div class="game-grid">
+      <div class="game-synopsis" data-reveal>
+        <p>Demon At The Door is a beautiful 2D adult adventure in active development.</p>
+        <p>Set in a mansion off in the woods with a small town nearby. A young man returns from six years of private school to get his life in order, and the mysterious circumstances surrounding the death of his parents open onto a much greater mystery.</p>
+        <p>Find out what happened to his family and uncover the secrets of the house he grew up in.</p>
+        <p>Along the way you will meet a cast of unique and sexy characters, explore beautiful locations, play mini-games, and much more.</p>
+        <p>Support on Patreon opens soon, with exclusive rewards: voting on content releases, new characters and upcoming scenes, sketches, unreleased art, and more.</p>
+      </div>
+
+      <div data-reveal style="--d: 0.12s">
+        <h3 class="features-title">What's inside</h3>
+        <ul class="feature-list">
+          <li>Sexy illustrations with unique scenes and characters</li>
+          <li>Funny dialogue and amazing liveliness.</li>
+          <li>Each part of the day has it's own charm, from early in the morning to deep in the night.</li>
+          <li>Point-and-click navigation with surprises at every corner.</li>
+          <li>Beautiful music and fully voiced characters</li>
+          <li>A built-in quest tracker that follows your story</li>
+          <li>Patreons can vote on content releases and new characters</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section class="section band band--bakery" id="gallery" aria-label="Screenshots">
+  <div class="section-inner">
+    <div class="section-header" data-reveal>
+      <span class="section-eyebrow">From the game</span>
+      <h2>Postcards from the estate</h2>
+      <div class="orn" aria-hidden="true">
+        <svg class="orn-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.9" stroke-linejoin="round"><circle cx="12" cy="12" r="10.4"/><path d="M12 3 L17.29 19.28 L3.44 9.22 L20.56 9.22 L6.71 19.28 Z"/></svg>
+      </div>
+      <p>Every scene is created with love. Click any shot to take a closer look.</p>
+    </div>
+
+    <div class="gallery" data-reveal>
+      <button class="shot" data-src="images/gallery/01_mansion.webp" data-caption="The mansion in all it's glory.">
+        <img src="images/gallery/thumbs/01_mansion.webp" width="800" height="450" alt="A sunlit cartoon mansion with green shutters, a stone path leading to the front steps, and a small red shed beside it" loading="lazy" />
+        <span class="shot-caption">The Mansion</span>
+      </button>
+      <button class="shot" data-src="images/gallery/02_pool.webp" data-caption="Cindy at the garden pool.">
+        <img src="images/gallery/thumbs/02_pool.webp" width="800" height="450" alt="Back at the pool meeting Cindy again after returning home." loading="lazy" />
+        <span class="shot-caption">Garden &amp; pool</span>
+      </button>
+      <button class="shot" data-src="images/gallery/03_kitchen.webp" data-caption="Mona in the kitchen, still baking.">
+        <img src="images/gallery/thumbs/03_kitchen.webp" width="800" height="450" alt="Mona always making something for Jason to eat." loading="lazy" />
+        <span class="shot-caption">The kitchen</span>
+      </button>
+      <button class="shot" data-src="images/gallery/04_bathroom.webp" data-caption="The bathroom where there always is someone in need of a shower.">
+        <img src="images/gallery/thumbs/04_bathroom.webp" width="800" height="450" alt="Jason is looking for Carla" loading="lazy" />
+        <span class="shot-caption">The bathroom</span>
+      </button>
+      <button class="shot" data-src="images/gallery/05_hug.webp" data-caption="Mona seeing Jason again in the kitchen after a long time.">
+        <img src="images/gallery/thumbs/05_hug.webp" width="800" height="450" alt="Mona and Jason hugging" loading="lazy" />
+        <span class="shot-caption">Return again</span>
+      </button>
+      <button class="shot" data-src="images/gallery/06_bakery.webp" data-caption="Lucy's Bakery and Pastries, in the village nearby.">
+        <img src="images/gallery/thumbs/06_bakery.webp" width="800" height="450" alt="A charming village" loading="lazy" />
+        <span class="shot-caption">The village bakery</span>
+      </button>
+      <button class="shot" data-src="images/gallery/07_bakery_inside.webp" data-caption="Suzie at the bakery.">
+        <img src="images/gallery/thumbs/07_bakery_inside.webp" width="800" height="450" alt="Suzie inside the bakery, she dropped something!" loading="lazy" />
+        <span class="shot-caption">Inside the bakery</span>
+      </button>
+      <button class="shot" data-src="images/gallery/08_club_diablo.webp" data-caption="Club Diablo on a busy night.">
+        <img src="images/gallery/thumbs/08_club_diablo.webp" width="800" height="450" alt="A warehouse club at night with a red neon 'Club Diablo' sign and a parking lot full of colorful sports cars" loading="lazy" />
+        <span class="shot-caption">Club Diablo</span>
+      </button>
+      <button class="shot" data-src="images/gallery/09_pool_night.webp" data-caption="Nora at the pool, after dark.">
+        <img src="images/gallery/thumbs/09_pool_night.webp" width="800" height="450" alt="Nora in a black bikini climbs out of the pool at night under the moonlight" loading="lazy" />
+        <span class="shot-caption">The pool at night</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CHARACTERS ============ -->
+<section class="section band band--village" id="characters">
+  <div class="section-inner">
+    <div class="section-header" data-reveal>
+      <span class="section-eyebrow">The cast</span>
+      <h2>Meet the household</h2>
+      <div class="orn" aria-hidden="true">
+        <svg class="orn-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.9" stroke-linejoin="round"><circle cx="12" cy="12" r="10.4"/><path d="M12 3 L17.29 19.28 L3.44 9.22 L20.56 9.22 L6.71 19.28 Z"/></svg>
+      </div>
+      <p>A growing cast, each with their own schedules, moods, and secrets. Win them over one day at a time.</p>
+    </div>
+
+    <article class="char-featured" data-reveal data-anim="images/chars/anim/player.webm">
+      <div class="char-featured-window">
+        <img src="images/chars/player.webp" width="512" height="512" alt="The player character, a young man with tousled dark hair in a black hoodie, smiling confidently" loading="lazy" />
+      </div>
+      <div class="char-featured-body">
+        <span class="section-eyebrow">The protagonist</span>
+        <h3>Jason</h3>
+        <p>Back after six years.</p>
+      </div>
+    </article>
+
+    <div class="char-grid">
+      <article class="char-card" data-reveal data-anim="images/chars/anim/bonbon.webm" style="--cglow: rgba(255, 45, 122, 0.20)">
+        <div class="char-window">
+          <img src="images/chars/bonbon.webp" width="512" height="512" alt="Bonbon, a red-haired demon with long pointed ears and green eyes, beaming a wide open smile" loading="lazy" />
+        </div>
+        <div class="char-body">
+          <h3>Bonbon</h3>
+          <p>All sharp ears and sharper smiles. Bonbon knows what you dream about, and she is delighted to negotiate.</p>
+        </div>
+      </article>
+      <article class="char-card" data-reveal data-anim="images/chars/anim/cindy.webm" style="--cglow: rgba(245, 227, 184, 0.15)">
+        <div class="char-window">
+          <img src="images/chars/cindy.webp" width="512" height="512" alt="Cindy, a cheerful blonde woman in a white tee, laughing with her eyes closed" loading="lazy" />
+        </div>
+        <div class="char-body">
+          <h3>Cindy</h3>
+          <p>Sunshine with a playful streak, works at an amazing bar.</p>
+        </div>
+      </article>
+      <article class="char-card" data-reveal data-anim="images/chars/anim/mona.webm" style="--d: 0.08s; --cglow: rgba(255, 170, 90, 0.15)">
+        <div class="char-window">
+          <img src="images/chars/mona.webp" width="640" height="640" alt="Mona, a blonde woman in a green apron over a white shirt, laughing warmly" loading="lazy" />
+        </div>
+        <div class="char-body">
+          <h3>Mona</h3>
+          <p>Still baking. The kitchen smells like home again.</p>
+        </div>
+      </article>
+      <article class="char-card" data-reveal data-anim="images/chars/anim/carla.webm" style="--d: 0.16s; --cglow: rgba(255, 168, 200, 0.16)">
+        <div class="char-window">
+          <img src="images/chars/carla.webp" width="512" height="512" alt="Carla, a long-haired blonde woman in a pink hoodie, laughing brightly" loading="lazy" />
+        </div>
+        <div class="char-body">
+          <h3>Carla</h3>
+          <p>Movie-buff with sweaty morning runs and proteins.</p>
+        </div>
+      </article>
+      <article class="char-card" data-reveal data-anim="images/chars/anim/nora.webm" style="--d: 0.24s; --cglow: rgba(63, 210, 199, 0.14)">
+        <div class="char-window">
+          <img src="images/chars/nora.webp" width="640" height="640" alt="Nora, a dark-haired woman in a black swimsuit, smiling warmly" loading="lazy" />
+        </div>
+        <div class="char-body">
+          <h3>Nora</h3>
+          <p>The brains of the operation.</p>
+        </div>
+      </article>
+      <article class="char-card" data-reveal style="--d: 0.32s; --cglow: rgba(255, 200, 120, 0.15)">
+        <div class="char-window">
+          <img src="images/chars/suzie.webp" width="640" height="640" alt="Suzie, a woman with a huge red afro in a blue polka-dot dress, grinning brightly" loading="lazy" />
+        </div>
+        <div class="char-body">
+          <h3>Suzie</h3>
+          <p>The brightest smile behind the bakery counter, flour dusted and famous for it.</p>
+        </div>
+      </article>
+      <article class="char-card" data-reveal style="--d: 0.4s; --cglow: rgba(120, 180, 255, 0.14)">
+        <div class="char-window">
+          <img src="images/chars/amani.webp" width="640" height="640" alt="Amani, a young woman with long curly black hair wearing a light blue cap that reads Sup'?" loading="lazy" />
+        </div>
+        <div class="char-body">
+          <h3>Amani</h3>
+          <p>The wizard at SuperDuper Computers. Fluent in hardware and l33tspeak.</p>
+        </div>
+      </article>
+      <article class="char-card char-card--tba" data-reveal style="--d: 0.48s; --cglow: rgba(255, 45, 122, 0.18)">
+        <div class="char-window char-window--tba">
+          <svg class="tba-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.7" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10.4"/><path d="M12 3 L17.29 19.28 L3.44 9.22 L20.56 9.22 L6.71 19.28 Z"/></svg>
+        </div>
+        <div class="char-body">
+          <h3 class="tba-title" aria-label="More to come">More to <span class="tba-word"><span class="tba-come">come</span><span class="tba-cum" aria-hidden="true">cum</span></span></h3>
+          <p>New faces are still moving into town. The household keeps growing.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ENGINE ============ -->
+<section class="section band band--computers" id="engine" data-accent="teal">
+  <div class="section-inner">
+    <div class="section-header" data-reveal>
+      <span class="section-eyebrow">Releasing separately</span>
+      <h2>The Firedreams VN Engine</h2>
+      <div class="orn" aria-hidden="true">
+        <svg class="orn-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.9" stroke-linejoin="round"><circle cx="12" cy="12" r="10.4"/><path d="M12 3 L17.29 19.28 L3.44 9.22 L20.56 9.22 L6.71 19.28 Z"/></svg>
+      </div>
+      <p>The data-driven visual novel system that powers Demon At The Door. Built on Godot 4.6 and designed so writers and artists can build with it directly.</p>
+    </div>
+
+    <div class="engine-tags" data-reveal>
+      <span class="engine-tag">Godot 4.6</span>
+      <span class="engine-tag">JSON-defined scenes</span>
+      <span class="engine-tag">FFmpeg video</span>
+      <span class="engine-tag">Encrypted release pipeline</span>
+      <span class="engine-tag">Cross-platform export</span>
+    </div>
+
+    <div class="engine-grid">
+      <article class="engine-card" data-reveal>
+        <h3><span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 4v16"/></svg>
+        </span>Author everything in JSON</h3>
+        <p>Scenes, dialogue, branches, and entire cutscenes are defined in plain JSON. Writers and designers iterate freely, and version control treats every change like a normal text diff.</p>
+      </article>
+
+      <article class="engine-card" data-reveal style="--d: 0.08s">
+        <h3><span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+        </span>Cinematic scene directives</h3>
+        <p>Precise positioning, transitions, slide and fade animations, camera shake, lightning flashes, and picture-in-picture overlays. All expressed declaratively, frame-perfect, and easy to tweak.</p>
+      </article>
+
+      <article class="engine-card" data-reveal style="--d: 0.16s">
+        <h3><span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+        </span>Real video, including transparency</h3>
+        <p>Integrated FFmpeg video playback supports MP4 and WebM out of the box, with alpha-channel video for ghostly overlays, animated character bursts, and full-screen cinematics.</p>
+      </article>
+
+      <article class="engine-card" data-reveal>
+        <h3><span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+        </span>Production-ready release pipeline</h3>
+        <p>Ship with confidence: AES-256 asset encryption, SHA-256 filename obfuscation, and a one-command export pipeline keep your art and writing protected from casual extraction.</p>
+      </article>
+
+      <article class="engine-card" data-reveal style="--d: 0.08s">
+        <h3><span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="12" rx="1.5"/><path d="M3 19h18M9 12h6"/></svg>
+        </span>Cross-platform from day one</h3>
+        <p>One project file, one set of content, and exports to Windows, Linux, and Steam Deck via Godot's mature export pipeline. Mobile and macOS targets follow the same path.</p>
+      </article>
+
+      <article class="engine-card" data-reveal style="--d: 0.16s">
+        <h3><span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+        </span>Built for the long game</h3>
+        <p>Quest systems, time and energy, multi-room exploration, save state: everything we needed to build a real visual novel is being lifted out of the game and made reusable.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ROADMAP ============ -->
+<section class="section band band--mansion" id="roadmap" data-accent="gold">
+  <div class="section-inner">
+    <div class="section-header" data-reveal>
+      <span class="section-eyebrow">The road ahead</span>
+      <h2>Where the game stands</h2>
+      <div class="orn" aria-hidden="true">
+        <svg class="orn-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.9" stroke-linejoin="round"><circle cx="12" cy="12" r="10.4"/><path d="M12 3 L17.29 19.28 L3.44 9.22 L20.56 9.22 L6.71 19.28 Z"/></svg>
+      </div>
+    </div>
+
+    <div class="roadmap" data-reveal>
+      <article class="road-phase is-done">
+        <h3><span class="road-node" aria-hidden="true"></span>Done</h3>
+        <ul>
+          <li>Engine core: scenes, branching dialogue, saves</li>
+          <li>Over twenty locations drawn</li>
+          <li>Cast portraits and animations</li>
+          <li>Day, time, and energy systems</li>
+        </ul>
+      </article>
+      <article class="road-phase is-now">
+        <h3><span class="road-node" aria-hidden="true"></span>In progress</h3>
+        <ul>
+          <li>Story chapters and scenes</li>
+          <li>Voice recording and music</li>
+          <li>Mini-games</li>
+          <li>The Early Access build</li>
+        </ul>
+      </article>
+      <article class="road-phase is-next">
+        <h3><span class="road-node" aria-hidden="true"></span>Next</h3>
+        <ul>
+          <li>Patreon and SubscribeStar launch</li>
+          <li>Early Access on Steam, itch.io, and Android</li>
+          <li>macOS, iPhone and iPad versions</li>
+          <li>The engine, released for other creators</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PLATFORMS ============ -->
+<section class="section" id="platforms">
+  <div class="section-inner">
+    <div class="section-header" data-reveal>
+      <span class="section-eyebrow">Where to play</span>
+      <h2>Coming to your screen of choice</h2>
+      <div class="orn" aria-hidden="true">
+        <svg class="orn-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.9" stroke-linejoin="round"><circle cx="12" cy="12" r="10.4"/><path d="M12 3 L17.29 19.28 L3.44 9.22 L20.56 9.22 L6.71 19.28 Z"/></svg>
+      </div>
+      <p>Demon At The Door launches on desktop, Steam Deck, and Android first, with Apple platforms following.</p>
+    </div>
+
+    <div class="platform-grid" data-reveal>
+      <div class="platform-block">
+        <h3>At launch</h3>
+        <ul class="platform-list">
+          <li class="platform-pill">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.5 10.5 4v8H3zM11.5 4 21 2.5V12h-9.5zM3 13h7.5v8L3 19.5zM11.5 13H21v9.5L11.5 21z"/></svg>
+            Windows
+          </li>
+          <li class="platform-pill">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2c-1.7 0-2.8 1.6-2.8 3.4 0 .8.2 1.5.5 2-.4.4-.8.9-1.2 1.6-.8 1.5-1.5 3-1.5 5 0 .9.1 1.7.4 2.5-.5.6-.9 1.4-.9 2.3 0 1.1.5 2.1 1.4 2.7.6.4 1.4.5 2.2.5h4c.8 0 1.6-.1 2.2-.5.9-.6 1.4-1.6 1.4-2.7 0-.9-.4-1.7-.9-2.3.3-.8.4-1.6.4-2.5 0-2-.7-3.5-1.5-5-.4-.7-.8-1.2-1.2-1.6.3-.5.5-1.2.5-2C14.8 3.6 13.7 2 12 2zm-1 5.2c.5 0 .8.4.8 1s-.4 1-.8 1-.9-.4-.9-1 .4-1 .9-1zm2 0c.5 0 .8.4.8 1s-.4 1-.8 1-.9-.4-.9-1 .4-1 .9-1z"/></svg>
+            Linux
+          </li>
+          <li class="platform-pill">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5h18a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm5 4a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm8 0a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM6 19h12v1H6z"/></svg>
+            Steam Deck
+          </li>
+          <li class="platform-pill">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 9c0-3.9 3.1-7 7-7s7 3.1 7 7v6H5V9zm-1 7h16v3a1 1 0 0 1-1 1h-2v3h-2v-3h-6v3H7v-3H5a1 1 0 0 1-1-1v-3zm5-4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm6 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg>
+            Android
+          </li>
+        </ul>
+      </div>
+
+      <div class="platform-block upcoming">
+        <h3>Coming after launch</h3>
+        <ul class="platform-list">
+          <li class="platform-pill">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.4 12.5c0-2.4 2-3.5 2.1-3.6-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9-.8 0-1.9-.9-3.2-.8-1.6 0-3.2.9-4 2.4-1.7 3-.4 7.4 1.3 9.8.8 1.2 1.7 2.5 3 2.4 1.2 0 1.6-.8 3-.8s1.8.8 3.1.7c1.3 0 2.1-1.2 2.9-2.4.9-1.4 1.3-2.7 1.3-2.8-.1-.1-2.5-1-2.5-3.9zm-2.4-7.1c.6-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.5-.6.7-1.2 1.8-1 2.9 1.1 0 2.2-.6 2.8-1.4z"/></svg>
+            macOS
+          </li>
+          <li class="platform-pill">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.4 12.5c0-2.4 2-3.5 2.1-3.6-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9-.8 0-1.9-.9-3.2-.8-1.6 0-3.2.9-4 2.4-1.7 3-.4 7.4 1.3 9.8.8 1.2 1.7 2.5 3 2.4 1.2 0 1.6-.8 3-.8s1.8.8 3.1.7c1.3 0 2.1-1.2 2.9-2.4.9-1.4 1.3-2.7 1.3-2.8-.1-.1-2.5-1-2.5-3.9z"/></svg>
+            iPhone &amp; iPad
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="ea-callout" data-reveal>
+      <span class="ea-top-rule" aria-hidden="true"></span>
+      <div class="ea-visitor" aria-hidden="true" data-visitor="images/chars/anim/bonbon.webm"></div>
+      <h3>Early Access is on the way</h3>
+      <p>An Early Access build of Demon At The Door is coming to Patreon, SubscribeStar, Steam, itch.io and the Android Play Store! Channels and dates will be announced right here on the site, so check back soon.</p>
+      <!-- When a channel goes live, swap its <span> for
+           <a class="ea-channel" href="URL" target="_blank" rel="noopener">
+           and drop the <small> tag. -->
+      <div class="ea-channels">
+        <span class="ea-channel">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 4v16"/><circle cx="14.5" cy="10" r="5.5"/></svg>
+          Patreon <small>announcing soon</small>
+        </span>
+        <span class="ea-channel">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.7 5.6 6.3.9-4.5 4.3 1 6.2-5.5-3-5.5 3 1-6.2L3 9.5l6.3-.9z"/></svg>
+          SubscribeStar <small>announcing soon</small>
+        </span>
+        <span class="ea-channel">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="15.5" cy="8.5" r="4.5"/><circle cx="6.5" cy="17.5" r="3"/><path d="M9.2 15.6l3.4-4.8"/></svg>
+          Steam <small>announcing soon</small>
+        </span>
+        <span class="ea-channel">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h14v9l-7 7-7-7z"/><path d="M9.5 4v5M14.5 4v5"/></svg>
+          itch.io <small>announcing soon</small>
+        </span>
+        <span class="ea-channel">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M6 3.5l13 8.5-13 8.5z"/></svg>
+          Android Play Store <small>announcing soon</small>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <a href="#top" class="brand"><img class="footer-logo" src="images/firedreams_logo.webp" width="1328" height="1328" alt="" loading="lazy" /><span class="fire">Fire</span><span class="dreams">dreams</span><span class="studio">Studio</span></a>
+    <div class="footer-contact">
+      <a href="mailto:dream@firedreams.studio">dream@firedreams.studio</a>
+    </div>
+    <div class="footer-meta">
+      <span class="badge-18" aria-label="18 plus">18+</span>
+      <span>&copy; 2026 Firedreams Studio. Demon At The Door is intended for adult audiences.</span>
+    </div>
+    <p class="footer-disclaimer">This site is a work in progress. Demon At The Door is in active development, and everything shown here, features, art, and story, is still being refined and may change.</p>
+  </div>
+</footer>
+
+<!-- ============ LIGHTBOX ============ -->
+<div class="lightbox" id="lightbox" role="dialog" aria-label="Screenshot viewer" aria-hidden="true">
+  <button class="lb-btn lightbox-close" id="lightbox-close" aria-label="Close screenshot viewer">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <button class="lb-btn lightbox-prev" id="lightbox-prev" aria-label="Previous screenshot">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+  </button>
+  <button class="lb-btn lightbox-next" id="lightbox-next" aria-label="Next screenshot">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+  </button>
+  <img id="lightbox-img" src="" alt="" />
+  <div class="lightbox-bar">
+    <span id="lightbox-caption"></span>
+    <span class="lightbox-counter" id="lightbox-counter"></span>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var saveData = navigator.connection && navigator.connection.saveData;
+
+  /* ---------- Age gate ---------- */
+  var gate = document.getElementById('age-gate');
+  var enterBtn = document.getElementById('ag-enter');
+  if (gate && enterBtn && !document.documentElement.classList.contains('age-ok')) {
+    var leaveLink = gate.querySelector('a.btn');
+    enterBtn.focus();
+    gate.addEventListener('keydown', function (e) {
+      if (e.key !== 'Tab') return;
+      var first = enterBtn, last = leaveLink;
+      if (e.shiftKey && document.activeElement === first) { last.focus(); e.preventDefault(); }
+      else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); }
+    });
+    enterBtn.addEventListener('click', function () {
+      try { localStorage.setItem('fds-age-ok', '1'); } catch (e) {}
+      document.documentElement.classList.add('age-ok');
+      if (reduceMotion) {
+        gate.remove();
+      } else {
+        gate.classList.add('leaving');
+        var gateTimer = setTimeout(function () { gate.remove(); }, 2200);
+        gate.addEventListener('transitionend', function (e) {
+          if (e.target === gate && e.propertyName === 'opacity') {
+            clearTimeout(gateTimer);
+            gate.remove();
+          }
+        });
+      }
+      var main = document.getElementById('main');
+      if (main) { main.setAttribute('tabindex', '-1'); main.focus({ preventScroll: true }); }
+    });
+  }
+
+  /* ---------- Nav scrolled state ---------- */
+  var nav = document.getElementById('nav');
+  var hero = document.querySelector('.hero');
+  if (nav && hero && 'IntersectionObserver' in window) {
+    var navIO = new IntersectionObserver(function (entries) {
+      nav.classList.toggle('scrolled', !entries[0].isIntersecting);
+    }, { rootMargin: '-80px 0px 0px 0px' });
+    navIO.observe(hero);
+  }
+
+  /* ---------- Scroll reveal ---------- */
+  var revealEls = document.querySelectorAll('[data-reveal]');
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    revealEls.forEach(function (el) { el.classList.add('in-view'); });
+  } else {
+    var revealIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          revealIO.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -4% 0px' });
+    revealEls.forEach(function (el) { revealIO.observe(el); });
+  }
+
+  /* ---------- Lightbox ---------- */
+  var lightbox = document.getElementById('lightbox');
+  var lbImg = document.getElementById('lightbox-img');
+  var lbCaption = document.getElementById('lightbox-caption');
+  var lbCounter = document.getElementById('lightbox-counter');
+  var shots = Array.prototype.slice.call(document.querySelectorAll('.shot'));
+  var lbIndex = -1;
+  var lbReturnFocus = null;
+
+  function lbShow(i) {
+    lbIndex = (i + shots.length) % shots.length;
+    var btn = shots[lbIndex];
+    var thumb = btn.querySelector('img');
+    lbImg.src = btn.getAttribute('data-src');
+    lbImg.alt = thumb ? thumb.getAttribute('alt') : '';
+    lbCaption.textContent = btn.getAttribute('data-caption') || '';
+    lbCounter.textContent = (lbIndex + 1) + ' / ' + shots.length;
+    [1, -1].forEach(function (d) {
+      var n = shots[(lbIndex + d + shots.length) % shots.length];
+      new Image().src = n.getAttribute('data-src');
+    });
+  }
+  function lbOpen(i, trigger) {
+    lbReturnFocus = trigger || null;
+    lbShow(i);
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('lightbox-close').focus();
+  }
+  function lbClose() {
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    lbImg.src = '';
+    document.body.style.overflow = '';
+    if (lbReturnFocus) lbReturnFocus.focus();
+  }
+
+  shots.forEach(function (btn, i) {
+    btn.addEventListener('click', function () { lbOpen(i, btn); });
+  });
+  document.getElementById('lightbox-close').addEventListener('click', lbClose);
+  document.getElementById('lightbox-prev').addEventListener('click', function () { lbShow(lbIndex - 1); });
+  document.getElementById('lightbox-next').addEventListener('click', function () { lbShow(lbIndex + 1); });
+  lightbox.addEventListener('click', function (e) {
+    if (e.target === lightbox || e.target === lbImg) lbClose();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') lbClose();
+    else if (e.key === 'ArrowLeft') lbShow(lbIndex - 1);
+    else if (e.key === 'ArrowRight') lbShow(lbIndex + 1);
+  });
+
+  /* ---------- Bonbon in the summon room ---------- */
+  var visitor = document.querySelector('.ea-visitor');
+  if (visitor && !reduceMotion && !saveData && 'IntersectionObserver' in window) {
+    var visIO = new IntersectionObserver(function (entries) {
+      if (!entries[0].isIntersecting) return;
+      visIO.disconnect();
+      var v = document.createElement('video');
+      v.muted = true;
+      v.loop = true;
+      v.playsInline = true;
+      v.preload = 'auto';
+      v.setAttribute('aria-hidden', 'true');
+      v.src = visitor.getAttribute('data-visitor');
+      v.addEventListener('canplay', function () {
+        v.classList.add('playing');
+        var p = v.play();
+        if (p && p.catch) p.catch(function () {});
+      }, { once: true });
+      visitor.appendChild(v);
+    }, { threshold: 0.35 });
+    visIO.observe(visitor.parentElement);
+  }
+
+  /* ---------- Drifting embers ---------- */
+  if (!reduceMotion && !saveData && 'IntersectionObserver' in window) {
+    document.querySelectorAll('canvas.embers').forEach(function (canvas) {
+      var host = canvas.parentElement;
+      var ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var W = 0, H = 0, parts = [], raf = 0, lastT = 0;
+      var running = false, inView = false;
+      var COUNT = 24;
+
+      function resize() {
+        var r = host.getBoundingClientRect();
+        W = Math.max(1, r.width);
+        H = Math.max(1, r.height);
+        canvas.width = Math.round(W * dpr);
+        canvas.height = Math.round(H * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+      function spawn(p, anywhere) {
+        p.x = Math.random() * W;
+        p.y = anywhere ? Math.random() * H : H + 12;
+        p.r = 0.8 + Math.random() * 1.7;
+        p.speed = 0.18 + Math.random() * 0.4;
+        p.sway = 8 + Math.random() * 22;
+        p.phase = Math.random() * 6.2832;
+        p.freq = 0.0008 + Math.random() * 0.0012;
+        p.warm = Math.random() < 0.35;
+        return p;
+      }
+      function frame(t) {
+        if (!running) return;
+        var dt = lastT ? Math.min(64, t - lastT) : 16;
+        lastT = t;
+        ctx.clearRect(0, 0, W, H);
+        for (var i = 0; i < parts.length; i++) {
+          var p = parts[i];
+          p.y -= p.speed * (dt / 16);
+          p.phase += p.freq * dt;
+          if (p.y < -12) { spawn(p, false); continue; }
+          var prog = Math.min(1, Math.max(0, 1 - p.y / H));
+          var a = Math.sin(prog * Math.PI) * 0.55;
+          var x = p.x + Math.sin(p.phase) * p.sway;
+          var rgb = p.warm ? '255, 120, 170' : '255, 200, 120';
+          var g = ctx.createRadialGradient(x, p.y, 0, x, p.y, p.r * 4);
+          g.addColorStop(0, 'rgba(' + rgb + ', ' + a.toFixed(3) + ')');
+          g.addColorStop(1, 'rgba(' + rgb + ', 0)');
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(x, p.y, p.r * 4, 0, 6.2832);
+          ctx.fill();
+        }
+        raf = requestAnimationFrame(frame);
+      }
+      function start() {
+        if (running) return;
+        running = true;
+        lastT = 0;
+        resize();
+        if (!parts.length) for (var i = 0; i < COUNT; i++) parts.push(spawn({}, true));
+        raf = requestAnimationFrame(frame);
+      }
+      function stop() {
+        running = false;
+        cancelAnimationFrame(raf);
+      }
+      new IntersectionObserver(function (entries) {
+        inView = entries[0].isIntersecting;
+        if (inView && !document.hidden) start(); else stop();
+      }).observe(host);
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) stop(); else if (inView) start();
+      });
+      window.addEventListener('resize', function () { if (running) resize(); });
+    });
+  }
+
+  /* ---------- Character hover animations ---------- */
+  if (!reduceMotion && !saveData) {
+    document.querySelectorAll('.char-card[data-anim], .char-featured[data-anim]').forEach(function (card) {
+      var video = null;
+      function show() {
+        video.classList.add('playing');
+        card.classList.add('anim-playing');
+      }
+      function hide() {
+        video.classList.remove('playing');
+        card.classList.remove('anim-playing');
+      }
+      function wanted() {
+        return card.matches(':hover') || card.contains(document.activeElement);
+      }
+      function play() {
+        if (!video) {
+          video = document.createElement('video');
+          video.muted = true;
+          video.loop = true;
+          video.playsInline = true;
+          video.setAttribute('aria-hidden', 'true');
+          video.preload = 'auto';
+          video.src = card.getAttribute('data-anim');
+          video.addEventListener('canplay', function () {
+            if (wanted()) show();
+          });
+          card.querySelector('.char-window, .char-featured-window').appendChild(video);
+        }
+        if (video.readyState >= 2) show();
+        var p = video.play();
+        if (p && p.catch) p.catch(hide);
+      }
+      function stop() {
+        if (!video) return;
+        hide();
+        video.pause();
+        video.currentTime = 0;
+      }
+      card.addEventListener('pointerenter', play);
+      card.addEventListener('pointerleave', stop);
+      card.addEventListener('focusin', play);
+      card.addEventListener('focusout', stop);
+    });
+  }
+})();
+</script>
+
+<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "a78d703c29684708ae4434e91a9b8b7e"}'></script><!-- End Cloudflare Web Analytics -->
+
+</body>
+</html>

@@ -2468,10 +2468,16 @@
     });
   }
 
-  /* ---------- Character hover animations ---------- */
+  /* ---------- Character animations ---------- */
+  /* On pointer devices the webms play on hover/focus. On touch devices
+     there is no hover, so instead each portrait loops automatically
+     while it is scrolled into view. */
   if (!reduceMotion && !saveData) {
+    var touchAuto = window.matchMedia('(hover: none)').matches && 'IntersectionObserver' in window;
+
     document.querySelectorAll('.char-card[data-anim], .char-featured[data-anim]').forEach(function (card) {
       var video = null;
+      var active = false;
       function show() {
         video.classList.add('playing');
         card.classList.add('anim-playing');
@@ -2481,6 +2487,7 @@
         card.classList.remove('anim-playing');
       }
       function wanted() {
+        if (touchAuto) return active;
         return card.matches(':hover') || card.contains(document.activeElement);
       }
       function play() {
@@ -2507,10 +2514,21 @@
         video.pause();
         video.currentTime = 0;
       }
-      card.addEventListener('pointerenter', play);
-      card.addEventListener('pointerleave', stop);
-      card.addEventListener('focusin', play);
-      card.addEventListener('focusout', stop);
+
+      if (touchAuto) {
+        /* Play only while on screen so we are not decoding every
+           portrait at once. */
+        var io = new IntersectionObserver(function (entries) {
+          active = entries[0].isIntersecting;
+          if (active) play(); else stop();
+        }, { threshold: 0.4 });
+        io.observe(card);
+      } else {
+        card.addEventListener('pointerenter', play);
+        card.addEventListener('pointerleave', stop);
+        card.addEventListener('focusin', play);
+        card.addEventListener('focusout', stop);
+      }
     });
   }
 })();

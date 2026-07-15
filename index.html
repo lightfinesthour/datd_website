@@ -158,6 +158,8 @@
 
   a { color: var(--gold); text-decoration: none; transition: color 0.2s ease; }
   a:hover { color: var(--pink-bright); }
+  a.studio-link { color: inherit; }
+  a.studio-link:hover { color: var(--gold); }
   img { max-width: 100%; height: auto; display: block; }
 
   h1, h2, h3, h4 {
@@ -1623,6 +1625,7 @@
     filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.6));
   }
   footer a { color: var(--ivory); border-bottom: 1px solid var(--line-strong); padding-bottom: 2px; }
+  .footer-contact { display: flex; flex-wrap: wrap; gap: 8px 20px; }
   footer a:hover { color: var(--gold); border-bottom-color: var(--gold); }
   .footer-meta {
     font-family: var(--font-display);
@@ -1702,7 +1705,7 @@
       <path d="M12 3 L17.29 19.28 L3.44 9.22 L20.56 9.22 L6.71 19.28 Z" />
     </svg>
     <h2 id="ag-title">Adults only</h2>
-    <p id="ag-desc">Firedreams Studio makes games for grown-ups. This site presents Demon At The Door, an adult visual novel with content intended for mature audiences. Please confirm that you are 18 or older.</p>
+    <p id="ag-desc"><a class="studio-link" href="https://firedreams.studio/">Firedreams Studio</a> makes games for grown-ups. This site presents Demon At The Door, an adult visual novel with content intended for mature audiences. Please confirm that you are 18 or older.</p>
     <div class="ag-actions">
       <button id="ag-enter" class="btn btn-primary" type="button">I am 18 or older. Enter</button>
       <a class="btn btn-ghost" href="https://www.google.com" rel="nofollow">Leave</a>
@@ -1766,7 +1769,7 @@
         <img class="studio-logo" src="images/firedreams_logo.webp" width="1328" height="1328" alt="Firedreams Studio logo" loading="lazy" />
       </div>
       <span class="section-eyebrow">The studio behind the door</span>
-      <h2 class="studio-title">Firedreams Studio</h2>
+      <h2 class="studio-title"><a class="studio-link" href="https://firedreams.studio/">Firedreams Studio</a></h2>
       <p class="studio-lede">A small, independent studio building hand-crafted adult visual novels, and the tools we wished we had when we started.</p>
     </div>
 
@@ -1801,7 +1804,7 @@
         <svg class="orn-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.9" stroke-linejoin="round"><circle cx="12" cy="12" r="10.4"/><path d="M12 3 L17.29 19.28 L3.44 9.22 L20.56 9.22 L6.71 19.28 Z"/></svg>
       </span>
       <p>We believe adult interactive fiction deserves the same craft, warmth, and care as any other medium.</p>
-      <cite>Firedreams Studio</cite>
+      <cite><a class="studio-link" href="https://firedreams.studio/">Firedreams Studio</a></cite>
     </blockquote>
   </div>
 </section>
@@ -2195,11 +2198,12 @@
   <div class="footer-inner">
     <a href="#top" class="brand"><img class="footer-logo" src="images/firedreams_logo.webp" width="1328" height="1328" alt="" loading="lazy" /><span class="fire">Fire</span><span class="dreams">dreams</span><span class="studio">Studio</span></a>
     <div class="footer-contact">
+      <a href="https://firedreams.studio/">firedreams.studio</a>
       <a href="mailto:dream@firedreams.studio">dream@firedreams.studio</a>
     </div>
     <div class="footer-meta">
       <span class="badge-18" aria-label="18 plus">18+</span>
-      <span>&copy; 2026 Firedreams Studio. Demon At The Door is intended for adult audiences.</span>
+      <span>&copy; 2026 <a class="studio-link" href="https://firedreams.studio/">Firedreams Studio</a>. Demon At The Door is intended for adult audiences.</span>
     </div>
     <p class="footer-disclaimer">This site is a work in progress. Demon At The Door is in active development, and everything shown here, features, art, and story, is still being refined and may change.</p>
   </div>

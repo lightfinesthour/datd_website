@@ -1,0 +1,127 @@
+PRIVACY POLICY FOR THE DEMON AT THE DOOR DISCORD BOT
+====================================================
+
+Service:     Demon at the Door Discord bot
+Operator:    Firedreams Studio
+Contact:     dream@firedreams.studio
+Effective:   31 August 2026
+Last update: 31 August 2026
+
+
+SUMMARY
+-------
+The bot stores what is needed to do three jobs: manage members of the
+Demon at the Door Discord server, grant Discord roles and rewards to
+people who support the project on Patreon, and keep a record of what is
+posted in the server. That last part means messages you send in the
+server, and direct messages you send to the bot, are logged and kept.
+Your data stays with Firedreams Studio and the services listed in
+section 6, and is used only for the purposes listed in section 4.
+
+
+DETAILS
+-------
+
+1. Who this covers
+   This policy applies to the Discord bot operated by Firedreams Studio in
+   the Demon at the Door Discord server. It is separate from Discord's own
+   privacy policy and Patreon's privacy policy, which also apply to you
+   when you use those services.
+
+2. What the bot stores
+
+   Discord data
+   - Your Discord user ID
+   - Your username and server nickname
+   - The IDs of the servers and roles you have in servers where the bot
+     is installed
+   - Timestamps of bot actions involving you (for example when a role was
+     granted or removed)
+   - Moderation records, if a moderator uses the bot to issue a warning,
+     timeout, or ban: the reason, the moderator, and the date
+
+   Message records
+   - The content of messages you post in channels of servers where the
+     bot is installed, together with the author, the channel, the time
+     sent, and any edits or deletions
+   - Attachments and links you post, or references to them
+   - Direct messages you send to the bot itself, including their content,
+     attachments, and the time sent
+   This log is kept for recordkeeping: to settle disputes, to review
+   moderation decisions, and to keep a history of the community. Treat
+   anything you post in the server, or send to the bot in a direct
+   message, as a permanent record that the server's operators can read
+   back at any time.
+
+   Patreon data (only if you choose to link your Patreon account)
+   - Your Patreon user ID
+   - Your membership status and pledge tier
+   - The email address associated with your Patreon account, where Patreon
+     provides it, used only to match your pledge to your Discord account
+   - The link between your Patreon account and your Discord account
+
+3. The limits of what the bot reaches
+   The bot collects the data listed in section 2 and nothing further. Its
+   reach covers channels of servers where it is installed and direct
+   messages addressed to it. Direct messages between you and other users,
+   voice channel audio, and messages in servers without the bot stay
+   outside that reach. Payments run entirely through Patreon, so the
+   information Firedreams Studio receives about your pledge is limited to
+   your Patreon user ID, membership status, tier, and email address.
+
+4. Why the data is used
+   - To grant, update, and remove Discord roles that match your current
+     Patreon tier
+   - To deliver rewards and perks tied to those tiers
+   - To run normal server administration: welcome messages, role
+     self-assignment, moderation, and anti-spam
+   - To keep a record of server activity: reviewing reports and disputes,
+     checking moderation decisions after the fact, recovering deleted or
+     lost content, and keeping a history of the community
+   - To answer support questions such as "why did my supporter role
+     disappear?"
+
+   These purposes are the full list. Your data stays out of advertising,
+   profiling, and any sale or rental to third parties.
+
+5. Legal basis (EU/EEA and UK users)
+   Where the GDPR applies, the bot processes your data on the basis of
+   your consent (you invite the bot's actions by joining the server and by
+   linking your Patreon account) and legitimate interests (running a safe,
+   functioning community server, keeping a record of it, and honouring the
+   rewards supporters have paid for).
+
+6. Who the data is shared with
+   - Discord Inc., because the bot operates on Discord's platform
+   - The hosting provider that runs the bot and its database, which stores
+     the data on our behalf and is bound to act only on our instructions
+   Server moderators and administrators can read the message log, the
+   moderation records, and the supporter roles. Beyond these, your data is
+   disclosed only where the law requires it.
+
+7. How long the data is kept
+   - Everything the bot holds about a server is deleted within 30 days of
+     the bot being removed from that server
+
+8. Your rights and choices
+   You can ask, at any time, to:
+   - have it deleted
+   
+   Leaving the server also stops all further processing.
+
+9. Security
+   Data is stored on access-controlled servers, and access is limited to
+   Firedreams Studio and the people who operate the bot.
+
+10. Children
+    The bot is for people who meet Discord's minimum age (13, or higher
+    where local law requires it). Data belonging to a child below that
+    age is deleted as soon as we learn of it.
+
+11. Changes
+    If this policy changes, the new version will be published at this same
+    address with an updated date. Significant changes will be announced in
+    the Discord server.
+
+12. Contact
+    Questions? Email dream@firedreams.studio.

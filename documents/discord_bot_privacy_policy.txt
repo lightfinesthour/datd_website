@@ -5,7 +5,7 @@ Service:     Demon at the Door Discord bot
 Operator:    Firedreams Studio
 Contact:     dream@firedreams.studio
 Effective:   31 August 2026
-Last update: 31 August 2026
+Last update: 19 October 2026
 
 
 SUMMARY
@@ -57,8 +57,12 @@ DETAILS
    - Your Patreon user ID
    - Your membership status and pledge tier
    - The email address associated with your Patreon account, where Patreon
-     provides it, used only to match your pledge to your Discord account
+     provides it, used to match your pledge to your Discord account and to
+     send you the patron emails described in section 4
    - The link between your Patreon account and your Discord account
+   Supporters also get a patron page at patrons.demonatthedoor.com and
+   patron emails. What that service stores is described in the Firedreams
+   Studio privacy policy: https://firedreams.studio/documents/datd_patreon_app_privacy-policy.txt
 
 3. The limits of what the bot reaches
    The bot collects the data listed in section 2 and nothing further. Its
@@ -72,7 +76,11 @@ DETAILS
 4. Why the data is used
    - To grant, update, and remove Discord roles that match your current
      Patreon tier
-   - To deliver rewards and perks tied to those tiers
+   - To deliver rewards and perks tied to those tiers, including direct
+     messages from the bot when you join, change tier or leave
+   - To email patrons about their membership (welcome, tier change, end of
+     membership) and, unless switched off on the patron page, about new
+     game builds
    - To run normal server administration: welcome messages, role
      self-assignment, moderation, and anti-spam
    - To keep a record of server activity: reviewing reports and disputes,
@@ -95,6 +103,8 @@ DETAILS
    - Discord Inc., because the bot operates on Discord's platform
    - The hosting provider that runs the bot and its database, which stores
      the data on our behalf and is bound to act only on our instructions
+   - Brevo (Sendinblue SAS, France), which sends the patron emails on our
+     behalf and receives your email address and the message content
    Server moderators and administrators can read the message log, the
    moderation records, and the supporter roles. Beyond these, your data is
    disclosed only where the law requires it.

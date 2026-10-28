@@ -5,7 +5,7 @@ Service:     Demon at the Door Discord bot
 Operator:    Firedreams Studio
 Contact:     dream@firedreams.studio
 Effective:   31 August 2026
-Last update: 19 October 2026
+Last update: 28 October 2026
 
 
 SUMMARY
@@ -60,9 +60,10 @@ DETAILS
      provides it, used to match your pledge to your Discord account and to
      send you the patron emails described in section 4
    - The link between your Patreon account and your Discord account
-   Supporters also get a patron page at patrons.demonatthedoor.com and
-   patron emails. What that service stores is described in the Firedreams
-   Studio privacy policy: https://firedreams.studio/documents/datd_patreon_app_privacy-policy.txt
+   Patreon members, on a paid tier or the free tier, also get a patron
+   page at patrons.demonatthedoor.com; paying patrons also get patron
+   emails. What that service stores, for free members too, is described
+   in the Firedreams Studio privacy policy: https://firedreams.studio/documents/datd_patreon_app_privacy-policy.txt
 
 3. The limits of what the bot reaches
    The bot collects the data listed in section 2 and nothing further. Its
@@ -78,9 +79,10 @@ DETAILS
      Patreon tier
    - To deliver rewards and perks tied to those tiers, including direct
      messages from the bot when you join, change tier or leave
-   - To email patrons about their membership (welcome, tier change, end of
-     membership) and, unless switched off on the patron page, about new
-     game builds
+   - To email paying patrons about their membership (welcome, tier
+     change, end of membership) and, unless switched off on the patron
+     page, about new game builds. Free members get no emails or direct
+     messages from the bot.
    - To run normal server administration: welcome messages, role
      self-assignment, moderation, and anti-spam
    - To keep a record of server activity: reviewing reports and disputes,

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://demonatthedoor.com/sitemap.xml
